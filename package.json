@@ -1,0 +1,12 @@
+{
+  "name": "bun-tree-diagram",
+  "scripts": {
+    "jsx": "bun run --hot src/page.tsx"
+  },
+  "dependencies": {
+    "hono": "^4.6.13"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
