@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
-import { Tree } from './components/tree';
 import { css, Style } from 'hono/css'
+import { Tree } from './components/tree';
 
 const app = new Hono()
 
@@ -76,7 +76,7 @@ app.get('/', (c) => {
       }
       .tree li a {
         border: 1px solid #ccc;
-        padding: .5em .75em;
+        padding: .5em 0em;
         text-decoration: none;
         display: inline-block;
         border-radius: 5px;
