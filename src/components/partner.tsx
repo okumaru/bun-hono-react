@@ -1,6 +1,5 @@
-import { css, Style } from 'hono/css'
+import { css } from 'hono/css'
 import type { FC } from 'hono/jsx';
-import { Human } from './human';
 
 export const Partner: FC = (props) => {
   const partnerClass = css`

@@ -1,125 +1,8 @@
 import { type FC } from 'hono/jsx';
+import { css } from 'hono/css'
 import { Human } from './human';
 import { Partner } from './partner';
 import { family } from '../types/family';
-
-const familyTree = {
-  name: "Scotty Hoover",
-  gender: "male",
-  birthdate: "1986-03-27",
-  partner: {
-    name: "Odessa Osborn",
-    gender: "female",
-    birthdate: "1986-03-27",
-  },
-  childrens: [
-    {
-      name: "Samual Mcfarland",
-      gender: "male",
-      birthdate: "1986-03-27",
-      partner: {
-        name: "Glenda Sparks",
-        gender: "female",
-        birthdate: "1986-03-27",
-      },
-      childrens: [
-        {
-          name: "Stanton Knapp",
-          gender: "male",
-          birthdate: "1986-03-27",
-          partner: {
-            name: "Maryanne Simon",
-            gender: "female",
-            birthdate: "1986-03-27",
-          },
-          childrens: [
-            {
-              name: "Marcie Vaughan",
-              gender: "female",
-              birthdate: "1986-03-27",
-            },
-            {
-              name: "Aurelio Camacho",
-              gender: "male",
-              birthdate: "1986-03-27",
-            }
-          ]
-        },
-        {
-          name: "Marcelo Floyd",
-          gender: "male",
-          birthdate: "1986-03-27",
-          partner: {
-            name: "Arline West",
-            gender: "female",
-            birthdate: "1986-03-27",
-          },
-          childrens: [
-            {
-              name: "Matt Mcdonald",
-              gender: "male",
-              birthdate: "1986-03-27",
-            },
-            {
-              name: "Whitney Taylor",
-              gender: "female",
-              birthdate: "1986-03-27",
-            },
-            {
-              name: "Sasha Randall",
-              gender: "female",
-              birthdate: "1986-03-27",
-            },
-            {
-              name: "Francisco Gill",
-              gender: "male",
-              birthdate: "1986-03-27",
-            }
-          ]
-        }
-      ]
-    },
-    {
-      name: "Timmy Li",
-      gender: "male",
-      birthdate: "1986-03-27",
-      partner: {
-        name: "Liliana Lowery",
-        gender: "female",
-        birthdate: "1986-03-27",
-      },
-      childrens: [
-        {
-          name: "Otis Herrera",
-          gender: "male",
-          birthdate: "1986-03-27",
-          partner: {
-            name: "Hannah Greene",
-            gender: "female",
-            birthdate: "1986-03-27",
-          },
-          childrens: [
-            {
-              name: "Randolph Irwin",
-              gender: "female",
-              birthdate: "1986-03-27",
-            },
-            {
-              name: "Dorthy Christian",
-              gender: "female",
-              birthdate: "1986-03-27",
-            }
-          ]
-        },
-        {
-          name: "Eva Ferguson",
-          gender: "female",
-          birthdate: "1986-03-27",
-        }
-      ]
-    }
-  ]
-}
 
 const Container: FC = (props) => {
   return (
@@ -156,6 +39,7 @@ const Family: FC<family> = (props) => {
           />
         }
       </a>
+
       {props.childrens?.length &&
         <ul>
           {props.childrens.map(child =>
@@ -173,18 +57,110 @@ const Family: FC<family> = (props) => {
   )
 }
 
-export const Tree: FC<{}> = (props: {}) => {
+export const Tree: FC<family> = (props) => {
+  const treeClass = css`
+    :-hono-global {
+      .tree {}
+      .tree ul {
+        position: relative;
+        padding: 1em 0; 
+        white-space: nowrap;
+        margin: 0 auto;
+        text-align: center;
+        &::after {
+          content: '';
+          display: table;
+          clear: both;
+        }
+      }
+      .tree li {
+        display: inline-table; // need white-space fix
+        vertical-align: top;
+        text-align: center;
+        list-style-type: none;
+        position: relative;
+        padding: 1em .5em 0 .5em;
+        &::before,
+        &::after {
+          content: '';
+          position: absolute; 
+          top: 0; 
+          right: 50%;
+          border-top: 1px solid #ccc;
+          width: 50%; 
+          height: 1em;
+        }
+        &::after {
+          right: auto; 
+          left: 50%;
+          border-left: 1px solid #ccc;
+        }
+        &:only-child::after,
+        &:only-child::before {
+          display: none;
+        }
+        &:only-child {
+          padding-top: 0;
+        }
+        &:first-child::before,
+        &:last-child::after {
+          border: 0 none;
+        }
+        &:last-child::before{
+          border-right: 1px solid #ccc;
+          border-radius: 0 5px 0 0;
+        }
+        &:first-child::after{
+          border-radius: 5px 0 0 0;
+        }
+      }
+      .tree ul ul::before{
+        content: '';
+        position: absolute; 
+        top: 0; 
+        left: 50%;
+        border-left: 1px solid #ccc;
+        width: 0; 
+        height: 1em;
+      }
+      .tree li a {
+        border: 1px solid #ccc;
+        padding: .5em 0em;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 5px;
+        color: #333;
+        position: relative;
+        top: 1px;
+      }
+      .tree li a:hover,
+      .tree li a:hover+ul li a {
+        background: #e9453f;
+        color: #fff;
+        border: 1px solid #e9453f;
+      }
+      .tree li a:hover + ul li::after, 
+      .tree li a:hover + ul li::before, 
+      .tree li a:hover + ul::before, 
+      .tree li a:hover + ul ul::before{
+        border-color:  #e9453f;
+      }
+    }
+  `
+
   return (
-    <div class="tree">
-      <ul>
-        <Family
-          name={familyTree.name}
-          gender={familyTree.gender}
-          birthdate={familyTree.birthdate}
-          partner={familyTree.partner}
-          childrens={familyTree.childrens}
-        />
-      </ul>
+    <div class={treeClass}>
+      <div class={`tree`}>
+        <ul>
+          <Family
+            name={props.name}
+            gender={props.gender}
+            birthdate={props.birthdate}
+            partner={props.partner}
+            childrens={props.childrens}
+          />
+        </ul>
+      </div>
     </div>
   )
 }
